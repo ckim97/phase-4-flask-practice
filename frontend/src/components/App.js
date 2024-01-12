@@ -18,12 +18,12 @@ function App() {
         Initial Fetches
     ************************/
     useEffect(() => {
-        fetch(`/ducks`)
-            .then((res) => res.json())
-            .then((data) => {
-                setDucks(data);
-                setFeaturedDuck(data[0]);
-            });
+        // fetch(`/ducks`)
+        //     .then((res) => res.json())
+        //     .then((data) => {
+        //         setDucks(data);
+        //         setFeaturedDuck(data[0]);
+        //     });
         fetch(`/check_session`).then((res) => {
             if (res.ok) {
                 res.json().then((user) => setUser(user));
@@ -33,6 +33,20 @@ function App() {
             .then((res) => res.json())
             .then((data) => setFoods(data));
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            fetch(`/user/${user.id}/ducks`)
+                .then((res) => res.json())
+                .then((data) => {
+                    setFeaturedDuck(data[0]);
+                    setDucks(data);
+                });
+            fetch(`/foods`)
+                .then((res) => res.json())
+                .then((data) => setFoods(data))
+        }
+    })
     /**********************
         Authentication
     ************************/
